@@ -13,7 +13,7 @@ import HomePage from './Allcomponents/HomePage';
 import Wallet from './Allcomponents/Wallet';
 import UserProfileScreen from './Allcomponents/Userprofile';
 import LoginScreen from './Allcomponents/Login/Login';
-
+import Landingpage from './Allcomponents/Landingpage';
 
 
 
@@ -26,11 +26,12 @@ function App() {
 
   return (
     <NavigationContainer>
-       <Stack.Navigator initialRouteName="Loginscreen" screenOptions={{ headerShown: false }}>
+       <Stack.Navigator initialRouteName="HomePage" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="Wallet" component={Wallet} />
         <Stack.Screen name="userprofile" component={UserProfileScreen} />
         <Stack.Screen name="Loginscreen" component={LoginScreen} />
+        <Stack.Screen name="Landingpage" component={Landingpage} />
        </Stack.Navigator>
     </NavigationContainer>
   );

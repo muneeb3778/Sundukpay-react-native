@@ -1,143 +1,166 @@
-import React, { useContext } from 'react'
-import BackgroundGraphic from '../assets/Background.png'
-import walletcircleimg from '../assets/walletcircleimg.png'
-import card from '../assets/Walletimages/Card.png'
-// import LinearGradient from 'react-native-linear-gradient';
-import { View ,Image,StyleSheet ,TouchableOpacity,Text, } from 'react-native';
+import React, { useContext } from 'react';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  SafeAreaView,
+  StyleSheet,
+} from 'react-native';
 import { AppContext } from './ContextApi';
+import BackgroundGraphic from '../assets/Background.png';
+import walletcircleimg from '../assets/walletcircleimg.png';
+import card from '../assets/Walletimages/Card.png';
+import LinearGradient from 'react-native-linear-gradient';
+
+const { width, height } = Dimensions.get('window');
 
 const Wallet = () => {
-const {QuickLogin,isQuickLogin ,setisQuickLogin}=useContext(AppContext)
- 
+  const { QuickLogin, isQuickLogin, setisQuickLogin } = useContext(AppContext);
+
   return (
-   <View  style={{flex:1,position:"relative"}}>
-
-    <Text onPress={()=>{setisQuickLogin(false)}}>
-  <View>
-    <Image source={BackgroundGraphic}
-style={{height:600, width:600, position:"absolute", left:-300}} />
-  </View>
-  </Text>
-
-  <Text onPress={()=>{setisQuickLogin(false)}}>
-   <View>
-    <Image source={walletcircleimg}
-style={{height:700, width:390, position:"absolute", top:-340 , left:0 }} />
-  </View>
-  </Text>
-
-<Text onPress={()=>{setisQuickLogin(false)}}>
-   <View>
-    <Image source={card}
-style={{height:260, width:350, position:"absolute", left:15, top:4 }} />    
-  </View>
-</Text>
-
-  <View >
-    <Text style={{ position:"absolute", left:18, top:380, fontSize:40, fontFamily:'Helvetica', fontWeight:"900"}}>
-        Your Digital Islamic Wallet
-    </Text>
-      <Text style={{ position:"absolute", left:19, top:480,fontSize:20,width:350, color:"gray", fontFamily:'Helvetica',}}>
-        Seamless, secure, and smart payments mad easy
-    </Text>
-  </View>
-  <View>
-   {/* <TouchableOpacity
-      style={{
-        position: 'absolute',
-        top: 550,
-        left: 30,
-      }}
-    > */}
-      {/* <LinearGradient
-        colors={['#D4A852', '#AD7C20']}
-        start={{ x: 0.2, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 50,
-          width: 340,
-          borderRadius: 8,
-        }}
+    <SafeAreaView style={styles.container}>
+      <ScrollView
+        contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
       >
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 20,
-            fontWeight: 'bold',
-          }}
-        >
-        Login with Google
-        </Text> 
-      </LinearGradient>
-    </TouchableOpacity> */}
+        {/* Background Image */}
+        <Image source={BackgroundGraphic} style={styles.backgroundImage} resizeMode="cover" />
 
-     {/* <TouchableOpacity
-      style={{
-        position: 'absolute',
-        top: 615,
-        left: 30,
-      }}
-    > */}
-      {/* <LinearGradient
-        colors={['#D4A852', '#AD7C20']}
-        start={{ x: 0.2, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 50,
-          width: 340,
-          borderRadius: 8,
-        }}
-      >
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 20,
-            fontWeight: 'bold',
-          }}
-        >
-          Log in 
-        </Text> 
-      </LinearGradient>
-    </TouchableOpacity>
-  <TouchableOpacity
-      style={{
-        position: 'absolute',
-        top: 680,
-        left: 30,
-      }}
-      onPress={()=>{setisQuickLogin(true)}}
-    >
-      <LinearGradient
-        colors={['black', 'black']}
-        start={{ x: 0.2, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: 50,
-          width: 340,
-          borderRadius: 8,
-        }}
-      >
-        <Text
-          style={{
-            color: '#fff',
-            fontSize: 20,
-            fontWeight: 'bold',
-          }}
-        >
-          Quick Login 
-        </Text> 
-      </LinearGradient>
-    </TouchableOpacity> */}
-    {isQuickLogin==true?<QuickLogin/>:""}
-    </View>
-   </View>
-  )
-}
+        {/* Wallet Circle */}
+        <Image source={walletcircleimg} style={styles.walletCircle} resizeMode="contain" />
 
-export default Wallet
+        {/* Card Image */}
+        <Image source={card} style={styles.cardImage} resizeMode="contain" />
+
+        {/* Heading & Description */}
+        <View style={styles.textContainer}>
+          <Text style={styles.heading}>Your Digital Islamic Wallet</Text>
+          <Text style={styles.subHeading}>
+            Seamless, secure, and smart payments made easy
+          </Text>
+        </View>
+
+        {/* Buttons */}
+        <View style={styles.buttonContainer}>
+          {/* Login with Google */}
+          <TouchableOpacity activeOpacity={0.8} style={{ marginBottom: 15 }}>
+            <LinearGradient
+              colors={['#D4A852', '#AD7C20']}
+              start={{ x: 0.2, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.linearButton}
+            >
+              <Text style={styles.buttonText}>Login with Google</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* Log in */}
+          <TouchableOpacity activeOpacity={0.8} style={{ marginBottom: 15 }}>
+            <LinearGradient
+              colors={['#D4A852', '#AD7C20']}
+              start={{ x: 0.2, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.linearButton}
+            >
+              <Text style={styles.buttonText}>Log in</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+
+          {/* Quick Login */}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setisQuickLogin(true)}
+            style={styles.quickLoginButton}
+          >
+            <Text style={styles.buttonText}>Quick Login</Text>
+            <Text style={{ color: '#fff', marginLeft: 8, fontSize: width * 0.05 }}>{'→'}</Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Quick Login Component */}
+        {isQuickLogin && <QuickLogin />}
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  scrollContainer: {
+    paddingBottom: 50,
+    alignItems: 'center',
+  },
+  backgroundImage: {
+  width: width * 1.8,
+  height: width * 1.8,
+  position: 'absolute',
+  top: -width * 0.,
+  left: -width,
+
+
+  },
+  walletCircle: {
+    position: 'absolute',
+    top: -(width * 1.80) / 2, // Half hide
+    width: width * 1.95,
+    height: width * 1.95,
+    alignSelf: 'center',
+  },
+ cardImage: {
+  width: width * 0.8,
+  aspectRatio: 0.85,
+  // position: 'absolute',
+  top: -width * 0.10,  // adjust this value for perfect positioning
+  alignSelf: 'center',
+},
+
+
+
+  textContainer: {
+    width: width * 0.9,
+    marginTop: 0,
+  },
+  heading: {
+    fontSize: width * 0.090, // Responsive font
+    fontWeight: '800',
+    // textAlign: 'center',
+    color: '#000',
+  },
+  subHeading: {
+    fontSize: width * 0.045,
+    // textAlign: 'center',
+    color: '#6B7280',
+    marginTop: 8,
+  },
+  buttonContainer: {
+    width: width * 0.9,
+    marginTop: 35,
+  },
+  linearButton: {
+    height: width * 0.14, // Responsive height
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  quickLoginButton: {
+    backgroundColor: 'black',
+    height: width * 0.14,
+    borderRadius: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: width * 0.045,
+    fontWeight: 'bold',
+  },
+});
+
+export default Wallet;
