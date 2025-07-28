@@ -7,11 +7,12 @@ import { View, Text, Image, TouchableOpacity, Dimensions } from 'react-native';
 // import { useNavigation } from '@react-navigation/native';
 import Backgroundimage from '../assets/Background.png';
 import LinearGradient from 'react-native-linear-gradient'
+import { useNavigation } from '@react-navigation/native';
 
 const { width, height } = Dimensions.get('window');
 
 const LandingPage = () => {
-  // const navigation = useNavigation();
+  const navigation = useNavigation();
 
   return (
     <View className="flex-1 bg-white items-center justify-center">
@@ -51,61 +52,31 @@ const LandingPage = () => {
           <Text className="text-lg md:text-2xl font-semibold text-black">Add Money</Text>
         </TouchableOpacity>
 
-        {/* Bottom Navigation Bar */}
-        <View className="absolute bottom-5 flex-row justify-around items-center h-[0%] w-[100%] rounded-xl">
-          
-          <View className="items-center">
-            {/* <GoHomeFill size={22} color="white" /> */}
-            <Text className="text-white text-xs">Home</Text>
-          </View>
+       
+ <LinearGradient
+  colors={['#c7962b', '#b6801c']}
+  start={{ x: 0, y: 0 }}
+  end={{ x: 1, y: 0 }}
+  className="absolute bottom-5 flex-row justify-around items-center h-[8%] w-[100%] rounded-xl self-center"
+>
+  <TouchableOpacity onPress={() => navigation.navigate("Home")} className="items-center">
+    <Text className="text-[10px] text-white mt-1">Home</Text>
+  </TouchableOpacity>
 
-          <View className="items-center">
-            {/* <PiQrCodeLight size={22} color="white" /> */}
-            <Text className="text-white text-xs">Scan</Text>
-          </View>
+  <TouchableOpacity onPress={() => navigation.navigate("Scan")} className="items-center">
+    <Text className="text-[10px] text-white mt-1">Scan</Text>
+  </TouchableOpacity>
 
-          <View className="items-center">
-            {/* <MdHistory size={22} color="white" /> */}
-            <Text className="text-white text-xs">History</Text>
-          </View>
+  <TouchableOpacity onPress={() => navigation.navigate("History")} className="items-center">
+    <Text className="text-[10px] text-white mt-1">History</Text>
+  </TouchableOpacity>
 
-          <View className="items-center">
-            {/* <AiOutlineUser size={22} color="white" /> */}
-            <Text className="text-white text-xs">Profile</Text>
-          </View>
+  <TouchableOpacity onPress={() => navigation.navigate("userprofile")} className="items-center">
+    <Text className="text-[10px] text-white mt-1">Profile</Text>
+  </TouchableOpacity>
+</LinearGradient>
 
-        </View>
-          <LinearGradient
-      colors={['#c7962b', '#b6801c']}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y: 0 }}
-      className="absolute bottom-5 flex-row justify-around items-center h-[8%] w-[100%] rounded-xl self-center"
-    >
-      {/* Home */}
-      <TouchableOpacity className="items-center">
-        {/* <GoHomeFill size={24} color="#fff" /> */}
-        <Text className="text-[10px] text-white mt-1">Home</Text>
-      </TouchableOpacity>
 
-      {/* Scan */}
-      <TouchableOpacity className="items-center">
-        {/* <PiQrCodeLight size={24} color="#fff" /> */}
-        <Text className="text-[10px] text-white mt-1">Scan</Text>
-      </TouchableOpacity>
-
-      {/* History */}
-      <TouchableOpacity className="items-center">
-        {/* <MdHistory size={24} color="#fff" /> */}
-        <Text className="text-[10px] text-white mt-1">History</Text>
-      </TouchableOpacity>
-
-      {/* Profile */}
-      <TouchableOpacity className="items-center">
-        {/* <AiOutlineUser size={24} color="#fff" /> */}
-        <Text className="text-[10px] text-white mt-1">Profile</Text>
-      </TouchableOpacity>
-    </LinearGradient>
-  
       </View>
     </View>
   );

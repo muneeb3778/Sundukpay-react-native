@@ -1,9 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Dimensions,
+  Alert,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-// import { Ionicons, Feather, MaterialIcons } from '@expo/vector-icons';
-import BackgroundGraphic from '../assets/Background.png';
-
+import axios from 'axios';
 
 const { width, height } = Dimensions.get('window');
 
@@ -12,57 +20,44 @@ const UserProfileScreen = () => {
   const [userdata, setUserData] = useState({});
 
   useEffect(() => {
-    fetch('https://d3024265734c.ngrok-free.app/api/sunduk-service/custom-login', {
-      method: 'GET',
-      credentials: 'include',
+    axios.get('https://d3024265734c.ngrok-free.app/api/sunduk-service/custom-login', {
+      withCredentials: true, // ✅ Axios alternative to fetch's credentials: 'include'
     })
-      .then((res) => {
-        if (!res.ok) throw new Error('Not logged in');
-        return res.json();
-      })
-      .then((data) => {
-        setUserData(data);
-      })
-      .catch((err) => {
-        Alert.alert('Error', 'Not logged in');
-      });
+    .then((response) => {
+      setUserData(response.data);
+    })
+    .catch(() => {
+      Alert.alert('Error', 'Not logged in');
+    });
   }, []);
 
   const indexing = userdata.fullName ? userdata.fullName[0].toUpperCase() : '';
 
   return (
-    <View style={styles.container}>
-        {/* Background Image Full Screen */}
-              <Image
-                source={BackgroundGraphic}
-                style={styles.backgroundGraphic}
-                resizeMode="cover"
-              />
-        
+    <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        {/* <ArrowLeft size={20} /> */}
-      </TouchableOpacity>
-
-      <Text style={styles.headerText}>Add Card</Text>
-    </View>
-  
-      {/* Profile Image Section */}
-      <View style={styles.profileWrapper}>
-        <View style={styles.imageContainer}>
-          {userdata.image ? (
-            <Image source={{ uri: userdata.image }} style={styles.profileImage} />
-          ) : (
-            <View style={styles.placeholderImage}>
-              <Text style={styles.placeholderText}>{indexing}</Text>
-            </View>
-          )}
-        </View>
-        <TouchableOpacity style={styles.editImageBtn}>
-          {/* <Feather name="edit-2" size={16} color="#fff" /> */}
-          <Text style={styles.editText}>Edit</Text>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
+          {/* Add back icon here if using vector icons */}
         </TouchableOpacity>
+        <Text style={styles.headerText}>Profile Details</Text>
+      </View>
+
+      {/* Profile Card */}
+      <View style={styles.profileCard}>
+        <View style={styles.imageWrapper}>
+          <View style={styles.imageContainer}>
+            {userdata.image ? (
+              <Image source={{ uri: userdata.image }} style={styles.profileImage} />
+            ) : (
+              <Text style={styles.placeholderText}>{indexing}</Text>
+            )}
+          </View>
+
+          <TouchableOpacity style={styles.editOverlayBtn}>
+            <Text style={styles.editOverlayText}>✎ Edit</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
       {/* User Info */}
@@ -70,21 +65,25 @@ const UserProfileScreen = () => {
         <Text style={styles.userName}>{userdata.fullName || 'Testing name'}</Text>
 
         <View style={styles.infoRow}>
-          {/* <MaterialIcons name="call" size={20} color="#000" /> */}
+          <View style={styles.iconBox}>
+            <Text>📞</Text>
+          </View>
           <Text style={styles.infoText}>{userdata.phonenumber || '‪+91 90961 23103‬'}</Text>
         </View>
 
         <View style={styles.infoRow}>
-          {/* <MaterialIcons name="email" size={20} color="#000" /> */}
+          <View style={styles.iconBox}>
+            <Text>✉</Text>
+          </View>
           <Text style={styles.infoText}>{userdata.email || 'testinguser@email.com'}</Text>
         </View>
       </View>
 
       {/* Edit Button */}
-      <TouchableOpacity style={styles.editBtn}>
-        <Text style={styles.editBtnText}>Edit</Text>
+      <TouchableOpacity style={styles.bottomEditBtn}>
+        <Text style={styles.bottomEditText}>Edit</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -94,123 +93,115 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingTop: 60,
+    paddingTop: Platform.OS === 'android' ? 40 : 0,
     alignItems: 'center',
   },
-  backgroundGraphic: {
-    position: 'absolute',
-    top: 0,
-    left: -250,
-    width: 500,
-    height: 500,
+  header: {
+    position:'absolute',
+    width: '100%',
+    height: 60,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomColor: '#eee',
+    borderBottomWidth: 1,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
   },
   backBtn: {
     position: 'absolute',
-    top: 50,
-    left: 20,
-  },
-  header: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    left: 0,
-    backgroundColor: '#fff',
-    height: 72,
-    paddingHorizontal: 16,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    width: 390,
-    zIndex: 999,
+    left: 16,
+    top: 16,
   },
   headerText: {
     fontSize: 18,
     fontWeight: '700',
-    textAlign: 'center',
-    flex: 1,
-    marginLeft: -20,
   },
-  profileWrapper: {
+  profileCard: {
+    backgroundColor: '#D4A852',
+    borderRadius: 16,
+    paddingVertical: 30,
+    paddingHorizontal: 0,
+    marginTop: 30,
+    width: width * 0.9,
     alignItems: 'center',
-    marginTop: 20,
+  },
+  imageWrapper: {
+    position: 'relative',
+    alignItems: 'center',
   },
   imageContainer: {
-    width: 164,
-    height: 164,
-    borderRadius: 82,
-    overflow: 'hidden',
-    backgroundColor: '#e4e4e4',
+    width: width * 0.4,
+    height: width * 0.4,
+    borderRadius: width * 0.2,
+    backgroundColor: '#eee',
     justifyContent: 'center',
     alignItems: 'center',
-    shadowColor: '#D4A852',
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.9,
-    shadowRadius: 10,
-    elevation: 8,
+    overflow: 'hidden',
+    borderWidth: 4,
+    borderColor: '#fff',
   },
   profileImage: {
     width: '100%',
     height: '100%',
   },
-  placeholderImage: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: '#888',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   placeholderText: {
     fontSize: 40,
     color: '#fff',
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
-  editImageBtn: {
-    flexDirection: 'row',
+  editOverlayBtn: {
+    position: 'absolute',
+    bottom: -10,
+    right: -10,
     backgroundColor: '#000',
-    paddingVertical: 6,
     paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 20,
-    marginTop: 12,
-    alignItems: 'center',
+    zIndex: 10,
   },
-  editText: {
+  editOverlayText: {
     color: '#fff',
-    marginLeft: 6,
-    fontSize: 14,
+    fontSize: 12,
   },
   infoSection: {
-    marginTop: 30,
-    alignItems: 'center',
-    gap: 12,
+    marginTop: 40,
+    width: '90%',
   },
   userName: {
     fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 8,
+    fontWeight: '700',
+    textAlign: 'center',
+    marginBottom: 20,
   },
   infoRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
-    marginVertical: 4,
+    marginBottom: 12,
+  },
+  iconBox: {
+    backgroundColor: '#f0f0f0',
+    padding: 8,
+    borderRadius: 8,
+    marginRight: 10,
   },
   infoText: {
-    fontSize: 15,
+    fontSize: 16,
     color: '#000',
   },
-  editBtn: {
-    position: 'absolute',
-    bottom: 30,
-    width: width * 0.85,
-    height: 48,
+  bottomEditBtn: {
+    marginTop: 'auto',
+    marginBottom: 30,
+    width: width * 0.9,
+    height: 50,
     backgroundColor: '#000',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  editBtnText: {
+  bottomEditText: {
     color: '#fff',
     fontSize: 16,
     fontWeight:'600',
-},
+ },
 });

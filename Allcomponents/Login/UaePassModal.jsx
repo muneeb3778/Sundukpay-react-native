@@ -9,8 +9,11 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Keyboard,
+  Dimensions,
 } from 'react-native';
 import CheckBox from '@react-native-community/checkbox';
+
+const { width, height } = Dimensions.get('window');
 
 const UaePassModal = ({ visible, onClose }) => {
   const [rememberMe, setRememberMe] = useState(false);
@@ -67,7 +70,6 @@ const UaePassModal = ({ visible, onClose }) => {
 
 export default UaePassModal;
 
-
 const styles = StyleSheet.create({
   modalBackdrop: {
     flex: 1,
@@ -77,62 +79,62 @@ const styles = StyleSheet.create({
   modalContainer: {
     width: '100%',
     backgroundColor: '#FBF6EE',
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    paddingHorizontal: 24,
-    paddingTop: 16,
-    paddingBottom: 32,
+    borderTopLeftRadius: width * 0.06,
+    borderTopRightRadius: width * 0.06,
+    paddingHorizontal: width * 0.06,
+    paddingTop: height * 0.025,
+    paddingBottom: height * 0.04,
     alignItems: 'center',
   },
   handleBar: {
-    width: 80,
-    height: 6,
+    width: width * 0.2,
+    height: height * 0.008,
     backgroundColor: '#000',
     borderRadius: 10,
-    marginBottom: 24,
+    marginBottom: height * 0.025,
   },
   logoWrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom: 20,
+    marginBottom: height * 0.025,
   },
   uaeLogo: {
-    width: 300,
-    height: 70,
+    width: width * 0.75,
+    height: height * 0.09,
   },
   input: {
     width: '100%',
-    height: 50,
+    height: height * 0.065,
     borderWidth: 1,
     borderColor: '#000',
     borderRadius: 10,
-    paddingHorizontal: 16,
-    fontSize: 14,
-    marginBottom: 16,
+    paddingHorizontal: width * 0.04,
+    fontSize: width * 0.04,
+    marginBottom: height * 0.025,
     color: '#000',
   },
   checkboxContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     alignSelf: 'flex-start',
-    marginBottom: 20,
+    marginBottom: height * 0.025,
   },
   checkboxLabel: {
-    marginLeft: 8,
-    fontSize: 14,
+    marginLeft: width * 0.02,
+    fontSize: width * 0.036,
     color: '#333',
   },
   loginBtn: {
     width: '100%',
     backgroundColor: '#000',
     borderRadius: 10,
-    paddingVertical: 14,
+    paddingVertical: height * 0.02,
     alignItems: 'center',
     justifyContent: 'center',
   },
   loginText: {
     color: '#fff',
-    fontSize: 16,
+    fontSize: width * 0.045,
     fontWeight:'600',
-},
+ },
 });

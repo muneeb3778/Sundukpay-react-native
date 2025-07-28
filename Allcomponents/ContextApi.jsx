@@ -10,12 +10,18 @@ import PasscodeIcon from '../assets/Walletimages/passcode.png';
 
 const AppContext = createContext();
 
+
+const AppProvider = (props) => {
+    
+const [isQuickLogin , setisQuickLogin]=useState(false)
+
+
 const QuickLogin = () => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.closeButton}>
+      <TouchableOpacity style={styles.closeButton} onPress={()=>{setisQuickLogin(false)}}>
         <Image source={LineDivider} style={styles.lineDivider} />
       </TouchableOpacity>
 
@@ -59,12 +65,20 @@ const QuickLogin = () => {
   );
 };
 
+  return (
+    <AppContext.Provider value={{QuickLogin,isQuickLogin ,setisQuickLogin}}>
+      {props.children}
+    </AppContext.Provider>
+  );
+};
+
+
 const styles = StyleSheet.create({
   container: {
     position: 'absolute',
-    top: 280,
-    width:400,
-    height:1000,
+    top: 450,
+    width:'100%',
+    height:500,
     backgroundColor: '#FBF6EE',
     borderRadius: 12,
   },
@@ -82,7 +96,7 @@ const styles = StyleSheet.create({
   },
  quiklogin:{
     position: 'absolute',
-    top: 15,
+    top: 15 ,
     left: 24,
  }, 
   title: {
@@ -110,7 +124,7 @@ const styles = StyleSheet.create({
  width: "100%",
  justifyContent:"center",
  alignItems:"center",
- top: 100,
+ top: 140,
  gap:20
  },
   icon: {
@@ -139,15 +153,5 @@ const styles = StyleSheet.create({
 });
 
 
-const AppProvider = (props) => {
-    
-const [isQuickLogin , setisQuickLogin]=useState(false)
-
-  return (
-    <AppContext.Provider value={{QuickLogin,isQuickLogin ,setisQuickLogin}}>
-      {props.children}
-    </AppContext.Provider>
-  );
-};
 
 export { AppContext, AppProvider };

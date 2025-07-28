@@ -25,7 +25,7 @@ const HomePage = () => {
   }, []);
   return (
     <View className="flex-1 bg-white relative">
-      {/* ✅ Background Image */}
+      {/* Background Image */}
     <Image
   source={BackgroundGraphic}
   className="absolute top-0"

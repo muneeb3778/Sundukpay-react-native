@@ -14,14 +14,29 @@ import BackgroundGraphic from '../assets/Background.png';
 import walletcircleimg from '../assets/walletcircleimg.png';
 import card from '../assets/Walletimages/Card.png';
 import LinearGradient from 'react-native-linear-gradient';
+import { Linking, Alert } from 'react-native';
+
 
 const { width, height } = Dimensions.get('window');
 
 const Wallet = () => {
   const { QuickLogin, isQuickLogin, setisQuickLogin } = useContext(AppContext);
 
+
+
+const googleLogin = async () => {
+  const url = 'https://ca761d287766.ngrok-free.app/api/sunduk-service/custom-login';
+
+  try {
+    await Linking.openURL(url); // Directly open the URL
+  } catch (err) {
+    Alert.alert('Error', `Cannot open this URL: ${url}`);
+  }
+};
+
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={[styles.container,{ backgroundColor: isQuickLogin ? 'rgba(0, 0, 0, 0.5)' : '#fff'}]}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}
@@ -30,10 +45,14 @@ const Wallet = () => {
         <Image source={BackgroundGraphic} style={styles.backgroundImage} resizeMode="cover" />
 
         {/* Wallet Circle */}
+        <TouchableOpacity onPress={()=>{setisQuickLogin(false)}}>
         <Image source={walletcircleimg} style={styles.walletCircle} resizeMode="contain" />
+        </TouchableOpacity>
 
         {/* Card Image */}
+        <TouchableOpacity onPress={()=>{setisQuickLogin(false)}}>
         <Image source={card} style={styles.cardImage} resizeMode="contain" />
+        </TouchableOpacity>
 
         {/* Heading & Description */}
         <View style={styles.textContainer}>
@@ -46,16 +65,21 @@ const Wallet = () => {
         {/* Buttons */}
         <View style={styles.buttonContainer}>
           {/* Login with Google */}
-          <TouchableOpacity activeOpacity={0.8} style={{ marginBottom: 15 }}>
-            <LinearGradient
-              colors={['#D4A852', '#AD7C20']}
-              start={{ x: 0.2, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.linearButton}
-            >
-              <Text style={styles.buttonText}>Login with Google</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+          <TouchableOpacity
+  activeOpacity={0.8}
+  onPress={googleLogin}  // ✅ Put the onPress here
+  style={{ marginBottom: 15 }}
+>
+  <LinearGradient
+    colors={['#D4A852', '#AD7C20']}
+    start={{ x: 0.2, y: 0 }}
+    end={{ x: 1, y: 1 }}
+    style={styles.linearButton}
+  >
+    <Text style={styles.buttonText}>Login with Google</Text>
+  </LinearGradient>
+</TouchableOpacity>
+
 
           {/* Log in */}
           <TouchableOpacity activeOpacity={0.8} style={{ marginBottom: 15 }}>
@@ -90,7 +114,6 @@ const Wallet = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   scrollContainer: {
     paddingBottom: 50,

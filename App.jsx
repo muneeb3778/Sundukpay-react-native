@@ -18,7 +18,6 @@ import Landingpage from './Allcomponents/Landingpage';
 
 
 
-
 const Stack = createNativeStackNavigator();
 
 
@@ -39,5 +38,3 @@ function App() {
 
 
 export default App;
-
-
