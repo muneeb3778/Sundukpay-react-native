@@ -16,15 +16,22 @@ import LoginScreen from './Allcomponents/Login/Login';
 import Landingpage from './Allcomponents/Landingpage';
 
 
-
-
 const Stack = createNativeStackNavigator();
+
+const linking = {
+  prefixes: ['islamicbank://'],
+  config: {
+    screens: {
+      Landingpage: 'landingpage',
+    },
+  },
+};
 
 
 function App() {
 
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={linking}>
        <Stack.Navigator initialRouteName="HomePage" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="Wallet" component={Wallet} />

@@ -73,8 +73,8 @@ export default UaePassModal;
 const styles = StyleSheet.create({
   modalBackdrop: {
     flex: 1,
-    justifyContent: 'flex-end',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'rgba(0, 0, 0, 0.5)flex-end',
+    backgroundColor: '',
   },
   modalContainer: {
     width: '100%',

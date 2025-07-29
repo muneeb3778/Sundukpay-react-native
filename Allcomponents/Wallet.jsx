@@ -15,6 +15,7 @@ import walletcircleimg from '../assets/walletcircleimg.png';
 import card from '../assets/Walletimages/Card.png';
 import LinearGradient from 'react-native-linear-gradient';
 import { Linking, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 
 const { width, height } = Dimensions.get('window');
@@ -22,17 +23,19 @@ const { width, height } = Dimensions.get('window');
 const Wallet = () => {
   const { QuickLogin, isQuickLogin, setisQuickLogin } = useContext(AppContext);
 
+  const navigation = useNavigation();
 
 
 const googleLogin = async () => {
-  const url = 'https://ca761d287766.ngrok-free.app/api/sunduk-service/custom-login';
+  const url = 'https://55b424ea2e16.ngrok-free.app/api/sunduk-service/custom-login';
 
   try {
-    await Linking.openURL(url); // Directly open the URL
+    await Linking.openURL(url);  // ✅ Open the backend login URL
   } catch (err) {
     Alert.alert('Error', `Cannot open this URL: ${url}`);
   }
 };
+
 
 
   return (
@@ -89,7 +92,7 @@ const googleLogin = async () => {
               end={{ x: 1, y: 1 }}
               style={styles.linearButton}
             >
-              <Text style={styles.buttonText}>Log in</Text>
+              <Text style={styles.buttonText} onPress={()=>{navigation.navigate("Loginscreen")}}>Log in</Text>
             </LinearGradient>
           </TouchableOpacity>
 
