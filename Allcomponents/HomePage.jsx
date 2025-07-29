@@ -19,7 +19,7 @@ const HomePage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.navigate('Wallet');
-    }, 10000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, []);
