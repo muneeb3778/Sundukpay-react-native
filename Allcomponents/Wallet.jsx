@@ -39,7 +39,7 @@ const googleLogin = async () => {
 
 
   return (
-    <SafeAreaView style={[styles.container,{ backgroundColor: isQuickLogin ? 'rgba(0, 0, 0, 0.5)' : '#fff'}]}>
+    <SafeAreaView style={[styles.container,{ backgroundColor: isQuickLogin ? 'rgba(0, 0, 0, 0.1)' : '#fff'}]}>
       <ScrollView
         contentContainerStyle={styles.scrollContainer}
         showsVerticalScrollIndicator={false}

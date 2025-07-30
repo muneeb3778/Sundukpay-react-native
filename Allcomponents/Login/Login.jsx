@@ -68,7 +68,7 @@ const LoginScreen = () => {
 
         {/* Sign Up Text */}
         <Text style={styles.signupText}>
-          Don’t have an account? <Text style={styles.signupLink}>Sign Up</Text>
+          Don't have an account? <Text style={styles.signupLink}>Sign Up</Text>
         </Text>
 
         {/* Next Button */}
