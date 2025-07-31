@@ -9,36 +9,54 @@ import {
   Alert,
   SafeAreaView,
   Platform,
+  ActivityIndicator,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 
-const { width, height } = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const UserProfileScreen = () => {
   const navigation = useNavigation();
-  const [userdata, setUserData] = useState({});
+  const [userdata, setUserData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('https://d3024265734c.ngrok-free.app/api/sunduk-service/custom-login', {
-      withCredentials: true, // ✅ Axios alternative to fetch's credentials: 'include'
+
+       const headers = {
+      'Content-Type': 'application/json',
+    };
+
+    axios.get('https://b14273574154.ngrok-free.app/api/sunduk-service/custom-login', {
+      withCredentials: true,
+      headers:headers,
     })
     .then((response) => {
+    console.log(response.data,'muneeb')
       setUserData(response.data);
     })
     .catch(() => {
-      Alert.alert('Error', 'Not logged in');
-    });
+      Alert.alert('Error', 'You are not logged in.');
+    })
+    .finally(() => setLoading(false));
   }, []);
 
-  const indexing = userdata.fullName ? userdata.fullName[0].toUpperCase() : '';
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loaderContainer}>
+        <ActivityIndicator size="large" color="#D4A852" />
+      </SafeAreaView>
+    );
+  }
+
+  const indexing = userdata?.fullName ? userdata.fullName[0].toUpperCase() : '';
 
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.backBtn}>
-          {/* Add back icon here if using vector icons */}
+          <Text style={{ fontSize: 18 }}>←</Text>
         </TouchableOpacity>
         <Text style={styles.headerText}>Profile Details</Text>
       </View>
@@ -47,13 +65,12 @@ const UserProfileScreen = () => {
       <View style={styles.profileCard}>
         <View style={styles.imageWrapper}>
           <View style={styles.imageContainer}>
-            {userdata.image ? (
+            {userdata?.image ? (
               <Image source={{ uri: userdata.image }} style={styles.profileImage} />
             ) : (
               <Text style={styles.placeholderText}>{indexing}</Text>
             )}
           </View>
-
           <TouchableOpacity style={styles.editOverlayBtn}>
             <Text style={styles.editOverlayText}>✎ Edit</Text>
           </TouchableOpacity>
@@ -62,20 +79,16 @@ const UserProfileScreen = () => {
 
       {/* User Info */}
       <View style={styles.infoSection}>
-        <Text style={styles.userName}>{userdata.fullName || 'Testing name'}</Text>
+        <Text style={styles.userName}>{userdata?.fullName   || 'Name not available'}</Text>
 
         <View style={styles.infoRow}>
-          <View style={styles.iconBox}>
-            <Text>📞</Text>
-          </View>
-          <Text style={styles.infoText}>{userdata.phonenumber || '‪+91 90961 23103‬'}</Text>
+          <View style={styles.iconBox}><Text>📞</Text></View>
+          <Text style={styles.infoText}>{userdata?.phonenumber || 'N/A'}</Text>
         </View>
 
         <View style={styles.infoRow}>
-          <View style={styles.iconBox}>
-            <Text>✉</Text>
-          </View>
-          <Text style={styles.infoText}>{userdata.email || 'testinguser@email.com'}</Text>
+          <View style={styles.iconBox}><Text>✉</Text></View>
+          <Text style={styles.infoText}>{userdata?.email || 'N/A'}</Text>
         </View>
       </View>
 
@@ -96,8 +109,13 @@ const styles = StyleSheet.create({
     paddingTop: Platform.OS === 'android' ? 40 : 0,
     alignItems: 'center',
   },
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   header: {
-    position:'absolute',
+    position: 'absolute',
     width: '100%',
     height: 60,
     backgroundColor: '#fff',
@@ -121,7 +139,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#D4A852',
     borderRadius: 16,
     paddingVertical: 30,
-    paddingHorizontal: 0,
     marginTop: 30,
     width: width * 0.9,
     alignItems: 'center',
@@ -172,6 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     textAlign: 'center',
+    color:'black',
     marginBottom: 20,
   },
   infoRow: {
@@ -202,6 +220,6 @@ const styles = StyleSheet.create({
   bottomEditText: {
     color: '#fff',
     fontSize: 16,
-    fontWeight:'600',
- },
+    fontWeight: '600',
+  },
 });

@@ -27,10 +27,10 @@ const Wallet = () => {
 
 
 const googleLogin = async () => {
-  const url = 'https://55b424ea2e16.ngrok-free.app/api/sunduk-service/custom-login';
+  const url = 'https://b14273574154.ngrok-free.app/api/sunduk-service/custom-login';
 
   try {
-    await Linking.openURL(url);  // ✅ Open the backend login URL
+    await Linking.openURL(url);
   } catch (err) {
     Alert.alert('Error', `Cannot open this URL: ${url}`);
   }
