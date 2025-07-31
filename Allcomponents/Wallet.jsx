@@ -133,16 +133,16 @@ const styles = StyleSheet.create({
   },
   walletCircle: {
     position: 'absolute',
-    top: -(width * 1.80) / 2, // Half hide
+    top: -(width * 2) / 2, // Half hide
     width: width * 1.95,
     height: width * 1.95,
     alignSelf: 'center',
   },
  cardImage: {
-  width: width * 0.8,
-  aspectRatio: 0.85,
+  width: width * 0.5,
+  aspectRatio: 0.8,
   // position: 'absolute',
-  top: -width * 0.10,  // adjust this value for perfect positioning
+  top: -width * 0.30,  // adjust this value for perfect positioning
   alignSelf: 'center',
 },
 

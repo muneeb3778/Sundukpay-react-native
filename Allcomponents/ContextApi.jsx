@@ -103,7 +103,8 @@ const styles = StyleSheet.create({
     marginTop:20,
     fontSize: 36,
     fontWeight: 'bold',
-    marginBottom:10
+    marginBottom:10,
+    color:'black'
   },
   description: {
     fontSize: 20,
@@ -138,6 +139,7 @@ const styles = StyleSheet.create({
   optionTitle: {
     fontSize: 20,
     fontWeight: '500',
+    color:'black'
   },
   optionSubtext: {
     fontSize: 15,
