@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,43 +11,17 @@ import {
   Platform,
   ActivityIndicator,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import axios from 'axios';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { AppContext } from './ContextApi';
 
 const { width } = Dimensions.get('window');
 
 const UserProfileScreen = () => {
   const navigation = useNavigation();
-  const [userdata, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
+const { QuickLogin, isQuickLogin, setisQuickLogin,userdata, setUserData } = useContext(AppContext);
 
-       const headers = {
-      'Content-Type': 'application/json',
-    };
 
-    axios.get('https://b14273574154.ngrok-free.app/api/sunduk-service/custom-login', {
-      withCredentials: true,
-      headers:headers,
-    })
-    .then((response) => {
-    console.log(response.data,'muneeb')
-      setUserData(response.data);
-    })
-    .catch(() => {
-      Alert.alert('Error', 'You are not logged in.');
-    })
-    .finally(() => setLoading(false));
-  }, []);
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.loaderContainer}>
-        <ActivityIndicator size="large" color="#D4A852" />
-      </SafeAreaView>
-    );
-  }
 
   const indexing = userdata?.fullName ? userdata.fullName[0].toUpperCase() : '';
 
@@ -79,7 +53,7 @@ const UserProfileScreen = () => {
 
       {/* User Info */}
       <View style={styles.infoSection}>
-        <Text style={styles.userName}>{userdata?.fullName   || 'Name not available'}</Text>
+        <Text style={styles.userName}>{userdata?.fullName || 'Name not available'}</Text>
 
         <View style={styles.infoRow}>
           <View style={styles.iconBox}><Text>📞</Text></View>
@@ -189,7 +163,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '700',
     textAlign: 'center',
-    color:'black',
+    color: 'black',
     marginBottom: 20,
   },
   infoRow: {

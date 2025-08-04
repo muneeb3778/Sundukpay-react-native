@@ -14,6 +14,7 @@ const AppContext = createContext();
 const AppProvider = (props) => {
     
 const [isQuickLogin , setisQuickLogin]=useState(false)
+const [userdata, setUserData] = useState(null);
 
 
 const QuickLogin = () => {
@@ -66,7 +67,7 @@ const QuickLogin = () => {
 };
 
   return (
-    <AppContext.Provider value={{QuickLogin,isQuickLogin ,setisQuickLogin}}>
+    <AppContext.Provider value={{QuickLogin,isQuickLogin ,setisQuickLogin,userdata, setUserData}}>
       {props.children}
     </AppContext.Provider>
   );

@@ -22,7 +22,9 @@ const linking = {
   prefixes: ['islamicbank://'],
   config: {
     screens: {
-      Landingpage: 'Landingpage',
+      Landingpage: {
+        path: 'login-success',
+      },
     },
   },
 };
