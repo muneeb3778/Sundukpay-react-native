@@ -14,4 +14,4 @@ const RootApp = () => (
   </AppProvider>
 );
 
-AppRegistry.registerComponent(appName, () => RootApp);
+AppRegistry.registerComponent('islamicbank', () => RootApp);

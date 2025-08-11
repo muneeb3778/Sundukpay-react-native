@@ -19,89 +19,86 @@ import card from '../assets/Walletimages/Card.png';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
+import CookieManager from '@react-native-cookies/cookies';
 
 const { width } = Dimensions.get('window');
-const BACKEND_URL = 'https://e9340e07eb2d.ngrok-free.app/api/sunduk-service';
+const BACKEND_URL = 'https://502ea5ad5cdc.ngrok-free.app/api/sunduk-service';
 
 const Wallet = () => {
-  const { QuickLogin, isQuickLogin, setisQuickLogin,userdata, setUserData } = useContext(AppContext);
+  const { isQuickLogin, setisQuickLogin, userdata, setUserData } = useContext(AppContext);
   const navigation = useNavigation();
 
-const googleLogin = async () => {
-  const loginUrl = `${BACKEND_URL}/oauth2/authorization/google`;
-  const redirectUrl = 'islamicbank://login-success'; // Make sure this matches your deep link
+  const googleLogin = async () => {
+    const loginUrl = `${BACKEND_URL}/oauth2/authorization/google`;
+    const redirectUrl = 'islamicbank://login-success';
 
-  try {
-    if (await InAppBrowser.isAvailable()) {
-      const result = await InAppBrowser.openAuth(loginUrl, redirectUrl, {
-        // Optional styling options
-        dismissButtonStyle: 'cancel',
-        preferredBarTintColor: '#453AA4',
-        preferredControlTintColor: 'white',
-        showTitle: true,
-        enableUrlBarHiding: true,
-        enableDefaultShare: false,
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        const result = await InAppBrowser.openAuth(loginUrl, redirectUrl, {
+          dismissButtonStyle: 'cancel',
+          preferredBarTintColor: '#453AA4',
+          preferredControlTintColor: 'white',
+          showTitle: true,
+          enableUrlBarHiding: true,
+          enableDefaultShare: false,
+        });
+
+        if (result.type === 'success' && result.url) {
+          handleDeepLink({ url: result.url });
+        }
+      } else {
+        Linking.openURL(loginUrl);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      Alert.alert('Login Failed', 'Something went wrong during Google login.');
+    }
+  };
+
+  const handleDeepLink = async ({ url }) => {
+    console.log('Deep Link Received:', url);
+
+    try {
+      const queryString = url.split('?')[1];
+      const params = new URLSearchParams(queryString);
+      const jsessionid = params.get('sessionId') || params.get('JSESSIONID');
+      const email = decodeURIComponent(params.get('email') || '');
+      const fullName = decodeURIComponent(params.get('fullName') || '');
+
+      if (!jsessionid) {
+        throw new Error('No session ID received');
+      }
+      if(email && fullName) {
+        setUserData({ email, fullName });
+      }
+
+      // Set session cookie
+      await CookieManager.set('https://502ea5ad5cdc.ngrok-free.app', {
+        name: 'JSESSIONID',
+        value: jsessionid,
+        domain: '502ea5ad5cdc.ngrok-free.app',
+        path: '/',
+        version: '1',
+        secure: true,
+        httpOnly: true,
+        expires: '2025-12-31T23:59:59.00Z',
       });
 
-      if (result.type === 'success' && result.url) {
-        // Deep link will be handled by your existing logic
-        console.log('Login success:', result.url);
-      }
-    } else {
-      Linking.openURL(loginUrl);
+      console.log('Session cookie set successfully');
+      navigation.navigate('Landingpage');
+    } catch (error) {
+      console.error('Error handling deep link:', error);
+      Alert.alert('Error', 'Failed to complete login process');
     }
-  } catch (error) {
-    Alert.alert('Login Failed', 'Something went wrong during Google login.');
-    console.error(error);
-  }
-};
+  };
 
   useEffect(() => {
-const handleDeepLink = async ({ url }) => {
-  console.log('Deep Link Received', url);
-
-  const queryString = url.split('?')[1];
-  const params = new URLSearchParams(queryString);
-
-  const jsessionid = params.get('sessionId') || params.get('JSESSIONID');
-  const email = decodeURIComponent(params.get('email') || '');
-  const fullName = decodeURIComponent(params.get('fullName') || '').replace(/\+/g, ' ');
-
-setUserData({
- jsessionid:jsessionid,
- email:email,
- fullName:fullName 
-})
-
-  console.log('sessionid:', jsessionid);
-  console.log('email:', email);
-  console.log('fullName:', fullName);
-
-  if (jsessionid && (url.startsWith('islamicbank://oauth2redirect') || url.startsWith('islamicbank://login-success'))) {
-    try {
-      const res = await axios.get(`${BACKEND_URL}/custom-login`, {
-        headers: {
-          Cookie: `JSESSIONID=${jsessionid}`, // for Spring backend
-        },
-        withCredentials: true,
-      });
-
-      if (res.status === 200) {
-        console.log('data', res.data);
-        navigation.navigate('Landingpage',{}); // Navigate after login
-      } else {
-        throw new Error('Unauthorized');
-      }
-    } catch (err) {
-      Alert.alert('Login Failed', 'Session invalid or expired.');
-    }
-  }
-};
-
     const listener = Linking.addEventListener('url', handleDeepLink);
 
     Linking.getInitialURL().then((url) => {
-      if (url) {handleDeepLink({ url })};
+      if (url) {
+        handleDeepLink({ url });
+      }
     });
 
     return () => {

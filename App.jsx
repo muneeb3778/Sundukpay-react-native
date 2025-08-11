@@ -14,6 +14,7 @@ import Wallet from './Allcomponents/Wallet';
 import UserProfileScreen from './Allcomponents/Userprofile';
 import LoginScreen from './Allcomponents/Login/Login';
 import Landingpage from './Allcomponents/Landingpage';
+import CurrencyConverter from './Allcomponents/CurrencyConverter';
 
 
 const Stack = createNativeStackNavigator();
@@ -34,12 +35,13 @@ function App() {
 
   return (
     <NavigationContainer linking={linking}>
-       <Stack.Navigator initialRouteName="HomePage" screenOptions={{ headerShown: false }}>
+       <Stack.Navigator initialRouteName="Wallet" screenOptions={{ headerShown: false }}>
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="Wallet" component={Wallet} />
         <Stack.Screen name="userprofile" component={UserProfileScreen} />
         <Stack.Screen name="Loginscreen" component={LoginScreen} />
         <Stack.Screen name="Landingpage" component={Landingpage} />
+        <Stack.Screen name="CurrencyConverter" component={CurrencyConverter} />
        </Stack.Navigator>
     </NavigationContainer>
   );

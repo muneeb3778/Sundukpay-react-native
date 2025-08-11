@@ -6,22 +6,35 @@ import {
   Image,
   TouchableOpacity,
   Dimensions,
-  Alert,
   SafeAreaView,
   Platform,
   ActivityIndicator,
 } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { AppContext } from './ContextApi';
+import axios from 'axios';
 
 const { width } = Dimensions.get('window');
 
 const UserProfileScreen = () => {
   const navigation = useNavigation();
+  const { userdata } = useContext(AppContext);
+  const [loading, setLoading] = useState(true);
 
-const { QuickLogin, isQuickLogin, setisQuickLogin,userdata, setUserData } = useContext(AppContext);
+  useEffect(() => {
+  if (userdata) {
+    setLoading(false);
+  }
+}, [userdata]);
 
 
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <ActivityIndicator size="large" color="#D4A852" />
+      </SafeAreaView>
+    );
+  }
 
   const indexing = userdata?.fullName ? userdata.fullName[0].toUpperCase() : '';
 
@@ -53,16 +66,16 @@ const { QuickLogin, isQuickLogin, setisQuickLogin,userdata, setUserData } = useC
 
       {/* User Info */}
       <View style={styles.infoSection}>
-        <Text style={styles.userName}>{userdata?.fullName || 'Name not available'}</Text>
+        <Text style={styles.userName}>{userdata?.fullName}</Text>
 
         <View style={styles.infoRow}>
           <View style={styles.iconBox}><Text>📞</Text></View>
-          <Text style={styles.infoText}>{userdata?.phonenumber || 'N/A'}</Text>
+          <Text style={styles.infoText}>{userdata?.phonenumber}</Text>
         </View>
 
         <View style={styles.infoRow}>
           <View style={styles.iconBox}><Text>✉</Text></View>
-          <Text style={styles.infoText}>{userdata?.email || 'N/A'}</Text>
+          <Text style={styles.infoText}>{userdata?.email}</Text>
         </View>
       </View>
 
